@@ -10,3 +10,6 @@ I didn't use ranlib.
 Yes symbols for functions like mystrlen are present (as defined symbols) inside the executable when built statically.
 This shows that static linking pulls in the actual code from the static library into the final binary. The functions are copied into the executable at link time, not just referenced.
 
+Feature 4: -fPIC generates machine code that can run correctly regardless of its load address in memory, which is required for shared libraries to be loaded at arbitrary locations.
+The static client is larger because it embeds all library code, while the dynamic client only contains references to the shared library.
+An environment variable that tells the dynamic loader where to look for shared libraries at runtime; we set it so the OS could find our custom libmyutils.so.
