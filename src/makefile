@@ -1,21 +1,21 @@
 CC = gcc
-CFLAGS = -I../include
-STATIC_TARGET = ../bin/client_static
-LIB = ../lib/libmyutils.a
+CFLAGS = -I../include -fPIC
+LIB = ../lib/libmyutils.so
+TARGET = ../bin/client_dynamic
 
-all: $(STATIC_TARGET)
+all: $(TARGET)
 
-$(STATIC_TARGET): main.o $(LIB)
+$(TARGET): main.o $(LIB)
 	mkdir -p ../bin
-	$(CC) $(CFLAGS) main.o -L../lib -lmyutils -o $@
+	$(CC) main.o -L../lib -lmyutils -o $(TARGET)
 
 $(LIB): mystrfunctions.o myfilefunctions.o
 	mkdir -p ../lib
-	ar rcs $(LIB) $^
+	$(CC) -shared -o $(LIB) mystrfunctions.o myfilefunctions.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(STATIC_TARGET) *.o $(LIB)
+	rm -f $(TARGET) *.o $(LIB)
 
